@@ -1,3 +1,54 @@
+const listOfPlayersExample = [
+    {
+        playerName: "Carlos Martínez",
+        xpLevel: 1,
+        playerAge: 28,
+        level: "Novato"
+    },
+    {
+        playerName: "Ana Rodríguez",
+        xpLevel: 3,
+        playerAge: 31,
+        level: "Veterano"
+    },
+    {
+        playerName: "Luis Hernández",
+        xpLevel: 4,
+        playerAge: 27,
+        level: "Profesional"
+    },
+    {
+        playerName: "María Fernández",
+        xpLevel: 2,
+        playerAge: 30,
+        level: "Regular"
+    },
+    {
+        playerName: "Jorge Pérez",
+        xpLevel: 1,
+        playerAge: 25,
+        level: "Novato"
+    },
+    {
+        playerName: "Gabriela Gómez",
+        xpLevel: 2,
+        playerAge: 33,
+        level: "Regular"
+    },
+    {
+        playerName: "Ricardo Sánchez",
+        xpLevel: 4,
+        playerAge: 35,
+        level: "Profesional"
+    },
+    {
+        playerName: "Valentina Morales",
+        xpLevel: 3,
+        playerAge: 29,
+        level: "Veterano"
+    }
+];
+
 // Clase constructora de jugador
 class Player {
     constructor(playerName, xpLevel, playerAge) {
@@ -22,8 +73,47 @@ class Player {
     };
 };
 
-// Array de participantes
-const listOfPlayers = [];
+// // Array de participantes
+const listOfPlayers = listOfPlayersExample;
+// const listOfPlayers = [];
+
+listOfPlayers.forEach(el => {
+    const cardOfPlayers = document.getElementById("card-players")
+
+    const playerInfo = document.createElement("div");
+    playerInfo.className = "card"
+
+    const playerInfoName = document.createElement("button");
+    playerInfoName.className = "btn btn-primary";
+    playerInfoName.type = "button";
+    playerInfoName.setAttribute("data-bs-toggle", "collapse");
+    playerInfoName.setAttribute("data-bs-target", "#collapseExample" + (listOfPlayers.indexOf(el)));
+    playerInfoName.setAttribute("aria-expanded", "false");
+    playerInfoName.setAttribute("aria-controls", "collapseExample" + (listOfPlayers.indexOf(el)));
+    playerInfoName.innerText = el.playerName;
+
+    const playerInfoContainer = document.createElement("div");
+    playerInfoContainer.className = "collapse";
+    playerInfoContainer.id = "collapseExample" + (listOfPlayers.indexOf(el));
+
+    const playerInfoList = document.createElement("ul");
+    playerInfoList.className = "list-group";
+
+    const playerInfoLevel = document.createElement("li");
+    playerInfoLevel.className = "list-group-item";
+    playerInfoLevel.innerText = `Nivel ${el.xpLevel} (${el.level})`;
+
+    const playerInfoAge = document.createElement("li");
+    playerInfoAge.className = "list-group-item";
+    playerInfoAge.innerText = `${el.playerAge} años`;
+
+    cardOfPlayers.appendChild(playerInfo)
+    playerInfo.appendChild(playerInfoName);
+    playerInfo.appendChild(playerInfoContainer);
+    playerInfoContainer.appendChild(playerInfoList);
+    playerInfoList.appendChild(playerInfoLevel);
+    playerInfoList.appendChild(playerInfoAge);
+})
 
 // Función para elegir una opción del listado (valida si se ingresa texto o decimal)
 function selectOption(textOption, numOptions) {
@@ -174,6 +264,46 @@ do {
                 console.log(newPlayer);
 
                 listOfPlayers.push(newPlayer);
+
+                // Mostrar nuevo jugador en el DOM
+                const cardOfPlayers = document.getElementById("card-players")
+
+                const playerInfo = document.createElement("div");
+                playerInfo.className = "card"
+
+                const playerInfoName = document.createElement("button");
+                playerInfoName.className = "btn btn-primary";
+                playerInfoName.type = "button";
+                playerInfoName.setAttribute("data-bs-toggle", "collapse");
+                playerInfoName.setAttribute("data-bs-target", "#collapseExample" + (listOfPlayers.length));
+                playerInfoName.setAttribute("aria-expanded", "false");
+                playerInfoName.setAttribute("aria-controls", "collapseExample" + (listOfPlayers.length));
+                playerInfoName.innerText = newPlayer.playerName;
+
+                const playerInfoContainer = document.createElement("div");
+                playerInfoContainer.className = "collapse";
+                playerInfoContainer.id = "collapseExample" + (listOfPlayers.length);
+
+                const playerInfoList = document.createElement("ul");
+                playerInfoList.className = "list-group";
+
+                const playerInfoLevel = document.createElement("li");
+                playerInfoLevel.className = "list-group-item";
+                playerInfoLevel.innerText = `Nivel ${newPlayer.xpLevel} (${newPlayer.level})`;
+
+                const playerInfoAge = document.createElement("li");
+                playerInfoAge.className = "list-group-item";
+                playerInfoAge.innerText = `${newPlayer.playerAge} años`;
+
+                cardOfPlayers.appendChild(playerInfo)
+                playerInfo.appendChild(playerInfoName);
+                playerInfo.appendChild(playerInfoContainer);
+                playerInfoContainer.appendChild(playerInfoList);
+                playerInfoList.appendChild(playerInfoLevel);
+                playerInfoList.appendChild(playerInfoAge);
+
+                // Mostrar cuántos jugadores hay en la partida
+
 
             } while (confirm("Desea agregar un nuevo jugador (si deseas volver al menú selecciona Cancel)"));
 

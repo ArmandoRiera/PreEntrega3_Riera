@@ -1,8 +1,8 @@
-// Prueba de comentario
-p {
-    font-size: 35px;
-}
+@import "./assets/fonts.scss";
 
-h1 {
-    font-size: 35px;
+#card-players {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
 }
