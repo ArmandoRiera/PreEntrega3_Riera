@@ -1,51 +1,61 @@
+alert("¡Bienvenido al ayudante para juegos de mesa!");
+
 const listOfPlayersExample = [
     {
-        playerName: "Carlos Martínez",
+        playerName: "Carlos",
         xpLevel: 1,
         playerAge: 28,
-        level: "Novato"
+        level: "Novato",
+        id: 1
     },
     {
-        playerName: "Ana Rodríguez",
+        playerName: "Ana",
         xpLevel: 3,
         playerAge: 31,
-        level: "Veterano"
+        level: "Veterano",
+        id: 2
     },
     {
-        playerName: "Luis Hernández",
+        playerName: "Luis",
         xpLevel: 4,
         playerAge: 27,
-        level: "Profesional"
+        level: "Profesional",
+        id: 3
     },
     {
-        playerName: "María Fernández",
+        playerName: "María",
         xpLevel: 2,
         playerAge: 30,
-        level: "Regular"
+        level: "Regular",
+        id: 4
     },
     {
-        playerName: "Jorge Pérez",
+        playerName: "Jorge",
         xpLevel: 1,
         playerAge: 25,
-        level: "Novato"
+        level: "Novato",
+        id: 5
     },
     {
-        playerName: "Gabriela Gómez",
+        playerName: "Gabriela",
         xpLevel: 2,
         playerAge: 33,
-        level: "Regular"
+        level: "Regular",
+        id: 6
     },
     {
-        playerName: "Ricardo Sánchez",
+        playerName: "Ricardo",
         xpLevel: 4,
         playerAge: 35,
-        level: "Profesional"
+        level: "Profesional",
+        id: 7
     },
     {
-        playerName: "Valentina Morales",
+        playerName: "Valentina",
         xpLevel: 3,
         playerAge: 29,
-        level: "Veterano"
+        level: "Veterano",
+        id: 8
     }
 ];
 
@@ -56,6 +66,7 @@ class Player {
         this.xpLevel = xpLevel;
         this.playerAge = playerAge;
         this.level = this.levelDefinition()
+        this.id = this.idDefinition()
     };
     levelDefinition() {
         switch (this.xpLevel) {
@@ -71,6 +82,12 @@ class Player {
                 return "Desconocido"
         };
     };
+    idDefinition() {
+
+        console.log("El id del nuevo jugador es " + (listOfPlayers.length + 1))
+
+        return (listOfPlayers.length + 1)
+    }
 };
 
 // // Array de participantes
@@ -78,6 +95,8 @@ const listOfPlayers = listOfPlayersExample;
 // const listOfPlayers = [];
 
 listOfPlayers.forEach(el => {
+
+    // Ciclo para renderizar jugadores de ejemplo
     const cardOfPlayers = document.getElementById("card-players")
 
     const playerInfo = document.createElement("div");
@@ -113,7 +132,105 @@ listOfPlayers.forEach(el => {
     playerInfoContainer.appendChild(playerInfoList);
     playerInfoList.appendChild(playerInfoLevel);
     playerInfoList.appendChild(playerInfoAge);
+
+    // Ciclo para agregar jugadores a lista de editar o eliminar jugadores
+    const editPlayerList = document.getElementById("editPlayerSelect")
+
+    const editAddListItem = document.createElement("option")
+    editAddListItem.value = `${el.id}`
+    editAddListItem.innerText = el.playerName
+
+    editPlayerList.appendChild(editAddListItem)
 })
+
+const xpLvlConfirm = true
+
+const playerAgeConfirm = true
+
+function addPlayer(xpLvlConfirm, playerAgeConfirm) {
+    const playerName = document.getElementById("playerNameInput")
+    let xpLevel;
+    let playerAge;
+
+    if (xpLvlConfirm) {
+        xpLevel = document.getElementById("playerXpLevelSelect");
+    };
+
+    if (playerAgeConfirm) {
+        playerAge = document.getElementById("playerAgeInput");
+    };
+
+    const newPlayer = new Player(playerName.value, parseInt(xpLevel.value), playerAge.value);
+
+    console.log(newPlayer)
+
+    listOfPlayers.push(newPlayer)
+
+    console.log(listOfPlayers)
+
+    // Rederizado de nuevo jugador
+    const cardOfPlayers = document.getElementById("card-players")
+
+    const playerInfo = document.createElement("div");
+    playerInfo.className = "card"
+
+    const playerInfoName = document.createElement("button");
+    playerInfoName.className = "btn btn-primary";
+    playerInfoName.type = "button";
+    playerInfoName.setAttribute("data-bs-toggle", "collapse");
+    playerInfoName.setAttribute("data-bs-target", "#collapseExample" + (listOfPlayers.length));
+    playerInfoName.setAttribute("aria-expanded", "false");
+    playerInfoName.setAttribute("aria-controls", "collapseExample" + (listOfPlayers.length));
+    playerInfoName.innerText = newPlayer.playerName;
+
+    const playerInfoContainer = document.createElement("div");
+    playerInfoContainer.className = "collapse";
+    playerInfoContainer.id = "collapseExample" + (listOfPlayers.length);
+
+    const playerInfoList = document.createElement("ul");
+    playerInfoList.className = "list-group";
+
+    const playerInfoLevel = document.createElement("li");
+    playerInfoLevel.className = "list-group-item";
+    playerInfoLevel.innerText = `Nivel ${newPlayer.xpLevel} (${newPlayer.level})`;
+
+    const playerInfoAge = document.createElement("li");
+    playerInfoAge.className = "list-group-item";
+    playerInfoAge.innerText = `${newPlayer.playerAge} años`;
+
+    cardOfPlayers.appendChild(playerInfo)
+    playerInfo.appendChild(playerInfoName);
+    playerInfo.appendChild(playerInfoContainer);
+    playerInfoContainer.appendChild(playerInfoList);
+    playerInfoList.appendChild(playerInfoLevel);
+    playerInfoList.appendChild(playerInfoAge);
+
+    // Ciclo para agregar jugadores a lista de editar o eliminar jugadores
+    const editPlayerList = document.getElementById("editPlayerSelect")
+
+    const editAddListItem = document.createElement("option")
+    editAddListItem.value = `${newPlayer.id}`
+    editAddListItem.innerText = newPlayer.playerName
+
+    editPlayerList.appendChild(editAddListItem)
+
+    // Limpiar formulario para agregar un nuevo jugador
+    playerName.value = ""
+    xpLevel.value = ""
+    playerAge.value = ""
+}
+
+let addPlayerForm = document.getElementById("addPlayerForm");
+let addPlayerSubmit = document.getElementById("addPlayerSubmit")
+
+// // Control para no actualizar página cuando se agregue un nuevo jugador
+addPlayerForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+});
+
+addPlayerSubmit.addEventListener("click", () => addPlayer(xpLvlConfirm, playerAgeConfirm)
+
+)
 
 // Función para elegir una opción del listado (valida si se ingresa texto o decimal)
 function selectOption(textOption, numOptions) {
@@ -157,32 +274,6 @@ function intValidation(textOption) {
     } while (true);
 }
 
-
-// Función para agregar jugadores
-function addPlayer(xpLvlConfirm, playerAgeConfirm) {
-
-    const playerName = prompt("¿Cuál es el nombre del jugador?");
-    let xpLevel;
-    let playerAge;
-
-    do {
-        if (xpLvlConfirm) {
-            xpLevel = selectOption("¿Qué experiencia tiene el jugador?\n1) Novato\n2) Regular\n3) Veterano\n4) Profesional", 4);
-        };
-    } while (xpLevel === null);
-
-    do {
-        if (playerAgeConfirm) {
-            playerAge = intValidation("¿Qué edad tiene el jugador?");
-        };
-
-    } while (playerAge === null);
-
-    const newPlayer = new Player(playerName, xpLevel, playerAge);
-
-    return newPlayer;
-};
-
 // Función para mostrar lista de jugadores
 function showListofPlayers(xpLvlConfirm, playerAgeConfirm) {
     let messageListOfPlayers = "";
@@ -222,182 +313,136 @@ function editSelectedPlayer(xpLvlConfirm, playerAgeConfirm, editPlayerOption) {
 
 };
 
-let xpLvlConfirm;
+// let menuOption;
 
-let playerAgeConfirm;
+// let messageListOfPlayers;
 
-let menuOption;
+// do {
+//     menuOption = selectOption("Elija una opción del menú:\n1) Agregar jugadores a la partida\n2) Ver jugadores de la partida\n3) Editar o eliminar jugador de la partida\n4) Generar grupos para la partida\n5) Ver grupos de la partida", 5);
 
-let messageListOfPlayers;
+//     switch (menuOption) {
+//         // Opción para agregar jugadores (en cualquier momento de la partida)
+//         case 1:
+//             // Variables para definir si se va a tomar en cuenta la experiencia y/o la edad de los jugadores (solo aplican 1 vez por partida)
+//             if (listOfPlayers.length === 0) {
 
-alert("¡Bienvenido al ayudante para juegos de mesa!");
+//                 alert("Antes de empezar necesitamos saber dos cosas importantes")
 
-do {
-    menuOption = selectOption("Elija una opción del menú:\n1) Agregar jugadores a la partida\n2) Ver jugadores de la partida\n3) Editar o eliminar jugador de la partida\n4) Generar grupos para la partida\n5) Ver grupos de la partida", 5);
+//                 xpLvlConfirm = confirm("¿Deseas tomar en cuenta la experiencia de los jugadores?");
 
-    switch (menuOption) {
-        // Opción para agregar jugadores (en cualquier momento de la partida)
-        case 1:
-            // Variables para definir si se va a tomar en cuenta la experiencia y/o la edad de los jugadores (solo aplican 1 vez por partida)
-            if (listOfPlayers.length === 0) {
+//                 playerAgeConfirm = confirm("¿Desea tomar en cuenta la edad de los jugadores?");
 
-                alert("Antes de empezar necesitamos saber dos cosas importantes")
+//                 console.log(xpLvlConfirm);
 
-                xpLvlConfirm = confirm("¿Deseas tomar en cuenta la experiencia de los jugadores?");
+//                 console.log(playerAgeConfirm);
+//             };
 
-                playerAgeConfirm = confirm("¿Desea tomar en cuenta la edad de los jugadores?");
+//             if (listOfPlayers.length === 0) {
+//                 alert("Agreguemos los jugadores de la partida");
+//             }
 
-                console.log(xpLvlConfirm);
+//             // Ciclo para agregar jugadores a la partida
+//             do {
 
-                console.log(playerAgeConfirm);
-            };
+//                 const newPlayer = addPlayer(xpLvlConfirm, playerAgeConfirm);
 
-            if (listOfPlayers.length === 0) {
-                alert("Agreguemos los jugadores de la partida");
-            }
+//                 console.log(newPlayer);
 
-            // Ciclo para agregar jugadores a la partida
-            do {
+//                 listOfPlayers.push(newPlayer);
 
-                const newPlayer = addPlayer(xpLvlConfirm, playerAgeConfirm);
+//             } while (confirm("Desea agregar un nuevo jugador (si deseas volver al menú selecciona Cancel)"));
 
-                console.log(newPlayer);
+//             console.log(listOfPlayers);
 
-                listOfPlayers.push(newPlayer);
+//             break
+//         case 2:
 
-                // Mostrar nuevo jugador en el DOM
-                const cardOfPlayers = document.getElementById("card-players")
+//             if (listOfPlayers.length === 0) {
+//                 alert("¡No has agregado jugadores aún!");
+//             } else {
+//                 messageListOfPlayers = showListofPlayers(xpLvlConfirm, playerAgeConfirm);
 
-                const playerInfo = document.createElement("div");
-                playerInfo.className = "card"
+//                 alert("Son en total " + listOfPlayers.length + " participantes:\n" + messageListOfPlayers);
 
-                const playerInfoName = document.createElement("button");
-                playerInfoName.className = "btn btn-primary";
-                playerInfoName.type = "button";
-                playerInfoName.setAttribute("data-bs-toggle", "collapse");
-                playerInfoName.setAttribute("data-bs-target", "#collapseExample" + (listOfPlayers.length));
-                playerInfoName.setAttribute("aria-expanded", "false");
-                playerInfoName.setAttribute("aria-controls", "collapseExample" + (listOfPlayers.length));
-                playerInfoName.innerText = newPlayer.playerName;
+//                 console.log("Son en total " + listOfPlayers.length + " participantes:\n" + messageListOfPlayers);
+//             };
 
-                const playerInfoContainer = document.createElement("div");
-                playerInfoContainer.className = "collapse";
-                playerInfoContainer.id = "collapseExample" + (listOfPlayers.length);
+//             break
+//         case 3:
+//             if (listOfPlayers.length === 0) {
+//                 alert("¡No has agregado jugadores aún!");
+//             } else {
+//                 let editOrDeletePlayerOption = selectOption("Seleccione la acción a realizar:\n1) Editar jugador\n2) Eliminar jugador", 2)
+//                 switch (editOrDeletePlayerOption) {
+//                     case 1:
 
-                const playerInfoList = document.createElement("ul");
-                playerInfoList.className = "list-group";
+//                         messageListOfPlayers = showListofPlayers(xpLvlConfirm, playerAgeConfirm);
 
-                const playerInfoLevel = document.createElement("li");
-                playerInfoLevel.className = "list-group-item";
-                playerInfoLevel.innerText = `Nivel ${newPlayer.xpLevel} (${newPlayer.level})`;
+//                         let editPlayerOption = selectOption("Seleccione el jugador que desea editar:\n" + messageListOfPlayers, listOfPlayers.length)
 
-                const playerInfoAge = document.createElement("li");
-                playerInfoAge.className = "list-group-item";
-                playerInfoAge.innerText = `${newPlayer.playerAge} años`;
+//                         // Función para modificar elemento seleccionado mendiante variable editPlayerOption
+//                         editSelectedPlayer(xpLvlConfirm, playerAgeConfirm, editPlayerOption);
 
-                cardOfPlayers.appendChild(playerInfo)
-                playerInfo.appendChild(playerInfoName);
-                playerInfo.appendChild(playerInfoContainer);
-                playerInfoContainer.appendChild(playerInfoList);
-                playerInfoList.appendChild(playerInfoLevel);
-                playerInfoList.appendChild(playerInfoAge);
+//                         break
+//                     case 2:
 
-                // Mostrar cuántos jugadores hay en la partida
+//                         messageListOfPlayers = showListofPlayers(xpLvlConfirm, playerAgeConfirm);
 
+//                         // Variable para buscar índice del jugador a eliminar en el vector listOfPlayers
+//                         let deletePlayerOption = selectOption("Seleccione el jugador que desea eliminar:\n" + messageListOfPlayers, listOfPlayers.length)
 
-            } while (confirm("Desea agregar un nuevo jugador (si deseas volver al menú selecciona Cancel)"));
+//                         if (confirm("Seguro que desea eliminar al jugador " + listOfPlayers[deletePlayerOption - 1].playerName)) {
+//                             listOfPlayers.splice(deletePlayerOption - 1, 1)
+//                             alert("El jugador ha sido eliminado con éxito")
+//                         }
 
-            console.log(listOfPlayers);
+//                         break
+//                     case null:
+//                         alert("Volvemos al menú principal")
+//                         break
+//                 }
+//             };
+//             break
+//         case 4:
 
-            break
-        case 2:
+//             // Algoritmo para asegurar nivelación de equipos según experiencia (en desarrollo)
 
-            if (listOfPlayers.length === 0) {
-                alert("¡No has agregado jugadores aún!");
-            } else {
-                messageListOfPlayers = showListofPlayers(xpLvlConfirm, playerAgeConfirm);
+//             // const list = [4, 2, 3, 3, 1, 4, 3, 2]
+//             // let sum = 0;
+//             // let n = list.length;
+//             // sum = list.reduce((acc, curr) => acc += curr, 0)
 
-                alert("Son en total " + listOfPlayers.length + " participantes:\n" + messageListOfPlayers);
+//             // let found = false;
+//             // let lsum = 0;
+//             // for (let i = 0; i < n - 1; i++) {
+//             //     lsum += list[i];
+//             //     let rsum = sum - lsum;
+//             //     // If averages of arr[0...i]
+//             //     // and arr[i+1..n-1] are same.
+//             //     // To avoid floating point problems
+//             //     // we compare "lsum(n-i+1)"
+//             //     // and "rsum(i+1)" instead of
+//             //     // "lsum/(i+1)" and "rsum/(n-i+1)"
+//             //     const avgC = Math.abs((lsum / (i + 1)) - (rsum / (n - i))) <= 2
+//             //     if (avgC) {
+//             //         console.log("From (0 " + i + ") to (" + (i + 1) + " " + (n - 1) + ")\n");
+//             //         found = true;
+//             //     }
+//             // }
+//             // // If no subarrays found
+//             // if (found == false) console.log('Not found')
+//             // alert(`${found} - ${lsum} - ${sum}`)
 
-                console.log("Son en total " + listOfPlayers.length + " participantes:\n" + messageListOfPlayers);
-            };
+//             alert("Opción aún en desarrollo")
+//             break
+//         case 5:
+//             alert("Opción aún en desarrollo")
+//             break
+//         case null:
+//             alert("¡Nos vemos!")
+//             break
+//     };
 
-            break
-        case 3:
-            if (listOfPlayers.length === 0) {
-                alert("¡No has agregado jugadores aún!");
-            } else {
-                let editOrDeletePlayerOption = selectOption("Seleccione la acción a realizar:\n1) Editar jugador\n2) Eliminar jugador", 2)
-                switch (editOrDeletePlayerOption) {
-                    case 1:
-
-                        messageListOfPlayers = showListofPlayers(xpLvlConfirm, playerAgeConfirm);
-
-                        let editPlayerOption = selectOption("Seleccione el jugador que desea editar:\n" + messageListOfPlayers, listOfPlayers.length)
-
-                        // Función para modificar elemento seleccionado mendiante variable editPlayerOption
-                        editSelectedPlayer(xpLvlConfirm, playerAgeConfirm, editPlayerOption);
-
-                        break
-                    case 2:
-
-                        messageListOfPlayers = showListofPlayers(xpLvlConfirm, playerAgeConfirm);
-
-                        // Variable para buscar índice del jugador a eliminar en el vector listOfPlayers
-                        let deletePlayerOption = selectOption("Seleccione el jugador que desea eliminar:\n" + messageListOfPlayers, listOfPlayers.length)
-
-                        if (confirm("Seguro que desea eliminar al jugador " + listOfPlayers[deletePlayerOption - 1].playerName)) {
-                            listOfPlayers.splice(deletePlayerOption - 1, 1)
-                            alert("El jugador ha sido eliminado con éxito")
-                        }
-
-                        break
-                    case null:
-                        alert("Volvemos al menú principal")
-                        break
-                }
-            };
-            break
-        case 4:
-
-            // Algoritmo para asegurar nivelación de equipos según experiencia (en desarrollo)
-
-            // const list = [4, 2, 3, 3, 1, 4, 3, 2]
-            // let sum = 0;
-            // let n = list.length;
-            // sum = list.reduce((acc, curr) => acc += curr, 0)
-
-            // let found = false;
-            // let lsum = 0;
-            // for (let i = 0; i < n - 1; i++) {
-            //     lsum += list[i];
-            //     let rsum = sum - lsum;
-            //     // If averages of arr[0...i]
-            //     // and arr[i+1..n-1] are same.
-            //     // To avoid floating point problems
-            //     // we compare "lsum(n-i+1)"
-            //     // and "rsum(i+1)" instead of
-            //     // "lsum/(i+1)" and "rsum/(n-i+1)"
-            //     const avgC = Math.abs((lsum / (i + 1)) - (rsum / (n - i))) <= 2
-            //     if (avgC) {
-            //         console.log("From (0 " + i + ") to (" + (i + 1) + " " + (n - 1) + ")\n");
-            //         found = true;
-            //     }
-            // }
-            // // If no subarrays found
-            // if (found == false) console.log('Not found')
-            // alert(`${found} - ${lsum} - ${sum}`)
-
-            alert("Opción aún en desarrollo")
-            break
-        case 5:
-            alert("Opción aún en desarrollo")
-            break
-        case null:
-            alert("¡Nos vemos!")
-            break
-    };
-
-} while (menuOption !== null);
+// } while (menuOption !== null);
 
 
