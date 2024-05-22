@@ -21,14 +21,19 @@
 
     <section class="section-players">
         <!-- Agregar jugador (botón) -->
-        <button class="btn btn-primary section-players__button" type="button" data-bs-toggle="collapse"
+        <button class="btn btn-dark section-players__button" type="button" data-bs-toggle="collapse"
             data-bs-target="#collapseAddPlayer" aria-expanded="false" aria-controls="collapseAddPlayer">
             Agregar nuevo jugador
         </button>
         <!-- Editar jugador (botón) -->
-        <button class="btn btn-primary section-players__button" type="button" data-bs-toggle="collapse"
+        <button class="btn btn-dark section-players__button" type="button" data-bs-toggle="collapse"
             data-bs-target="#collapseEditPlayer" aria-expanded="false" aria-controls="collapseEditPlayer">
             Editar jugador
+        </button>
+        <!-- Eliminar jugador (botón) -->
+        <button class="btn btn-dark section-players__button" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseDeletePlayer" aria-expanded="false" aria-controls="collapseDeletePlayer">
+            Eliminar jugador
         </button>
         <!-- Agregar jugador (formulario) -->
         <div class="collapse section-players__div" id="collapseAddPlayer">
@@ -44,8 +49,9 @@
                             <label for="playerXpLevelSelect" class="form-label">Nivel del experiencia</label>
                             <button type="button" class="btn-close" aria-label="Close"></button>
                         </div>
-                        <select class="form-select" aria-label="playerXpLevelSelect" id="playerXpLevelSelect">
-                            <option selected></option>
+                        <select class="form-select" aria-label="playerXpLevelSelect" id="playerXpLevelSelect"
+                            aria-placeholder="Prueba">
+                            <option disabled selected></option>
                             <option value="1">Nivel 1 (Novato)</option>
                             <option value="2">Nivel 2 (Regular)</option>
                             <option value="3">Nivel 3 (Veterano)</option>
@@ -61,7 +67,7 @@
                             aria-describedby="playerAgeHelp">
                     </div>
 
-                    <button type="submit" class="btn btn-primary" id="addPlayerSubmit">Agregar jugador</button>
+                    <button type="submit" class="btn btn-dark" id="addPlayerSubmit">Agregar</button>
                 </form>
             </div>
         </div>
@@ -69,11 +75,11 @@
         <div class="collapse section-players__div" id="collapseEditPlayer">
             <div class="card card-body">
                 <form id="editPlayerForm">
-                    <!-- Lista desplegable de jugadores -->
+                    <!-- Lista desplegable de jugadores (editar) -->
                     <div class="mb-3">
                         <div>
                             <label for="editPlayerSelect" class="form-label">Seleccione el jugador que desea
-                                editar o eliminar</label>
+                                editar</label>
                         </div>
                         <select class="form-select" aria-label="editPlayerSelect" id="editPlayerSelect">
                             <option selected></option>
@@ -90,7 +96,7 @@
                             <label for="editPlayerXpLevelSelect" class="form-label">Nivel del experiencia</label>
                         </div>
                         <select class="form-select" aria-label="editPlayerXpLevelSelect" id="editPlayerXpLevelSelect">
-                            <option selected></option>
+                            <option id="editPlayerXpLevelPlaceholder" disabled selected></option>
                             <option value="1">Nivel 1 (Novato)</option>
                             <option value="2">Nivel 2 (Regular)</option>
                             <option value="3">Nivel 3 (Veterano)</option>
@@ -104,49 +110,41 @@
                         <input type="editPlayerAge" class="form-control" id="editPlayerAgeInput"
                             aria-describedby="editPlayerAgeHelp">
                     </div>
+
+                    <button type="submit" class="btn btn-dark" id="editPlayerSubmit">Editar</button>
                 </form>
             </div>
         </div>
+        <!-- Eliminar jugador (formulario) -->
+        <div class="collapse section-players__div" id="collapseDeletePlayer">
+            <div class="card card-body">
+                <form id="deletePlayerForm">
+                    <!-- Lista desplegable de jugadores (eliminar) -->
+                    <div class="mb-3">
+                        <div>
+                            <label for="deletePlayerSelect" class="form-label">Seleccione el jugador que desea
+                                eliminar</label>
+                        </div>
+                        <select class="form-select" aria-label="deletePlayerSelect" id="deletePlayerSelect">
+                            <option selected></option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-dark" id="deletePlayerSubmit">Eliminar</button>
+                </form>
+            </div>
+        </div>
+
         <!-- Card para mostrar jugadores agregados y sus propiedades (experiencia y edad) -->
         <div class="card mx-5 mb-5 mt-2">
             <div class="card-header text-center">
                 <h2>JUGADORES</h1>
             </div>
             <div class="card-body" id="card-players">
-                <!-- Ejemplos de cómo deben mostrarse los jugadores NOTA: FALTA DIV QUE CONTENGA BOTÓN Y LISTA -->
-                <!-- <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    Armando
-                </button>
-                <div class="collapse" id="collapseExample">
-                    <ul class="list-group">
-                        <li class="list-group-item">Nivel 4 (Profesional)</li>
-                        <li class="list-group-item">32 años</li>
-                    </ul>
-                </div>
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
-                    Chitty
-                </button>
-                <div class="collapse" id="collapseExample1">
-                    <ul class="list-group">
-                        <li class="list-group-item">Nivel 1 (Novato)</li>
-                        <li class="list-group-item">33 años</li>
-                    </ul>
-                </div>
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
-                    Irene
-                </button>
-                <div class="collapse" id="collapseExample2">
-                    <ul class="list-group">
-                        <li class="list-group-item">Nivel 2 (Regular)</li>
-                        <li class="list-group-item">30 años</li>
-                    </ul>
-                </div> -->
+                <!-- Sección donde se agregan los elementos html por cada jugador nuevo -->
+
             </div>
-            <div class="card-footer">
-                Cantidad de jugadores en la partida
+            <div class="card-footer" id="qtyOfPlayers">
+                Hay 0 jugadores en la partida
             </div>
         </div>
     </section>

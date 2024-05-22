@@ -18,3 +18,7 @@
 h1 {
   padding: 0.25rem;
   text-align: center; }
+
+#editPlayerForm,
+#deletePlayerForm {
+  display: none; }
