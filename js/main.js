@@ -87,8 +87,6 @@ class Player {
     }
 };
 
-
-
 // Función para definir color de botones de forma aleatoria
 function btnColorDef() {
     switch (Math.floor(Math.random() * 7) + 1) {
@@ -112,10 +110,11 @@ function btnColorDef() {
 };
 
 // Array de participantes
-const listOfPlayers = listOfPlayersExample;
-// const listOfPlayers = [];
+// let listOfPlayers = listOfPlayersExample;
 
-// Ciclo para renderizar jugadores de ejemplo
+let listOfPlayers = JSON.parse(localStorage.getItem("listOfPlayers")) || [];
+
+// Ciclo para renderizar jugadores de ejemplo o guardados en localStorage
 listOfPlayers.forEach(el => {
 
     // Renderizar jugadores de ejemplo
@@ -206,6 +205,8 @@ function addPlayer(xpLvlConfirm, playerAgeConfirm) {
 
     listOfPlayers.push(newPlayer)
 
+    localStorage.setItem("listOfPlayers", JSON.stringify(listOfPlayers))
+
     // Rederizado de nuevo jugador
     const cardOfPlayers = document.getElementById("card-players");
 
@@ -269,13 +270,15 @@ function addPlayer(xpLvlConfirm, playerAgeConfirm) {
     xpLevel.value = ""
     playerAge.value = ""
 
+    document.getElementById("qtyOfPlayers").innerText = `Hay ${listOfPlayers.length} jugadores en la partida`
+
     if (listOfPlayers.length === 1) {
         document.getElementById("editPlayerForm").style.display = "block"
         document.getElementById("deletePlayerForm").style.display = "block"
     }
 }
 
-// // Control para no actualizar página cuando se agregue un nuevo jugador
+// Control para no actualizar página cuando se agregue un nuevo jugador
 const addPlayerForm = document.getElementById("addPlayerForm");
 const addPlayerSubmit = document.getElementById("addPlayerSubmit");
 
@@ -380,7 +383,6 @@ function editSelectedPlayer(playerNameEdited, playerAgeEdited, playerXpLevelEdit
 
         editPlayerAgeInput.value = "";
 
-        playerAgeEdited = false;
     };
 
     if (playerXpLevelEdited) {
@@ -410,7 +412,6 @@ function editSelectedPlayer(playerNameEdited, playerAgeEdited, playerXpLevelEdit
 
         editPlayerXpLevelPlaceholder.innerText = `Nivel ${playerEdited.xpLevel} (${playerEdited.level})`;
 
-        playerXpLevelEdited = false
     }
 
 };
@@ -444,9 +445,18 @@ function deleteSelectedPlayer() {
 
     deletePlayerList[playerDeletedIndex + 1].remove()
 
-    listOfPlayers.splice(playerDeletedIndex, playerDeletedIndex - 1)
+    listOfPlayers.splice(playerDeletedIndex, 1)
 
-    console.log(listOfPlayers)
+    document.getElementById("qtyOfPlayers").innerText = `Hay ${listOfPlayers.length} jugadores en la partida`
+
+    if (listOfPlayers.length === 0) {
+        document.getElementById("editPlayerForm").style.display = "none"
+        document.getElementById("deletePlayerForm").style.display = "none"
+    }
+
+    localStorage.removeItem("listOfPlayers")
+    localStorage.setItem("listOfPlayers", JSON.stringify(listOfPlayers))
+
 }
 
 // Control para no actualizar página cuando se elimine un jugador
@@ -480,25 +490,15 @@ function selectOption(textOption, numOptions) {
     } while (true);
 };
 
-// Función para validar si el número ingresado es número entero
-function intValidation(textOption) {
-    do {
-        const newNumber = prompt(textOption);
+// Función para validar si el número ingresado es número entero mayor a cero
+function ageValidation(newNumber) {
+    const enteredNumber = parseFloat(newNumber.replace(",", "."));
 
-        if (newNumber === null) {
-            return null
-        }
-
-        const number = newNumber.replace(",", ".");
-        const enteredNumber = parseFloat(number);
-
-        if (!isNaN(enteredNumber) && Number.isInteger(enteredNumber)) {
-            return enteredNumber;
-        } else {
-            alert("Por favor ingrese un número entero");
-        };
-
-    } while (true);
+    if (!isNaN(enteredNumber) && Number.isInteger(enteredNumber) && (enteredNumber > 0)) {
+        return enteredNumber;
+    } else {
+        alert("Por favor ingrese un número entero mayor a cero");
+    };
 }
 
 // Algoritmo para asegurar nivelación de equipos según experiencia (en desarrollo)
