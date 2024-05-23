@@ -366,7 +366,6 @@ function editSelectedPlayer(playerNameEdited, playerAgeEdited, playerXpLevelEdit
 
         editPlayerNameInput.value = "";
 
-        playerNameEdited = false;
     };
 
     if (playerAgeEdited) {
@@ -413,6 +412,7 @@ function editSelectedPlayer(playerNameEdited, playerAgeEdited, playerXpLevelEdit
 
         playerXpLevelEdited = false
     }
+
 };
 
 // Control para no actualizar página cuando se edite un nuevo jugador
@@ -423,7 +423,12 @@ editPlayerForm.addEventListener("submit", (e) => {
     e.preventDefault();
 });
 
-editPlayerSubmit.addEventListener("click", () => editSelectedPlayer(playerNameEdited, playerAgeEdited, playerXpLevelEdited));
+editPlayerSubmit.addEventListener("click", () => {
+    editSelectedPlayer(playerNameEdited, playerAgeEdited, playerXpLevelEdited);
+    playerNameEdited = false;
+    playerAgeEdited = false;
+    playerXpLevelEdited = false;
+});
 
 // Eliminar un jugador
 const deletePlayerList = document.getElementById("deletePlayerSelect");
