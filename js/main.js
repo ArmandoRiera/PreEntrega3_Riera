@@ -414,6 +414,9 @@ function editSelectedPlayer(playerNameEdited, playerAgeEdited, playerXpLevelEdit
 
     }
 
+    localStorage.removeItem("listOfPlayers")
+    localStorage.setItem("listOfPlayers", JSON.stringify(listOfPlayers))
+
 };
 
 // Control para no actualizar página cuando se edite un nuevo jugador
